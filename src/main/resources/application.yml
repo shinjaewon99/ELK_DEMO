@@ -10,8 +10,11 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: false
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+      url: '${custom.elastic.url}'
 
-logging:
-  config: classpath:logback-spring.xml
 
 
