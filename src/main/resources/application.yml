@@ -14,7 +14,11 @@ spring:
     elasticsearch:
       repositories:
         enabled: true
-      url: '${custom.elastic.url}'
+      url: '${spring.data.elastic.url}'
+      username: '${spring.data.elastic.username}'
+      password: '${spring.data.elastic.password}'
+      connection-timeout: 10s
+      socket-timeout: 30s
 
 
 
