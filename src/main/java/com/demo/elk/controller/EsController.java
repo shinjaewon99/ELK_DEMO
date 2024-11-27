@@ -1,31 +1,42 @@
 package com.demo.elk.controller;
 
-import com.demo.elk.domain.MemberDocument;
-import com.demo.elk.service.MemberServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import com.demo.elk.domain.Book;
+import com.demo.elk.service.BookEsService;
+import com.demo.elk.service.BookService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/members")
+@RequiredArgsConstructor
 public class EsController {
-    private final MemberServiceImpl memberService;
+    private final BookService bookService;
+    private final BookEsService bookEsService;
 
-    @Autowired
-    public EsController(final MemberServiceImpl memberService) {
-        this.memberService = memberService;
+    @GetMapping("/jpa/api")
+    public List<Book> search(@RequestBody SearchRequest searchRequest) {
+        return bookService.searchByJpaKeyWord(searchRequest.getKeyword());
     }
 
-    @PostMapping
-    public ResponseEntity<Void> save(@RequestBody final MemberDocument member) {
-        memberService.save(member);
-        return ResponseEntity.ok().build();
+    @GetMapping("/es/api")
+    public List<Book> searchEs(@RequestBody SearchRequest searchRequest) {
+        return bookEsService.searchByEsKeyWord(searchRequest.getKeyword());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MemberDocument> findById(@PathVariable final Long id) {
-        return memberService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    // DTO 클래스
+    public static class SearchRequest {
+        private String keyword;
+
+        // getter, setter
+        public String getKeyword() {
+            return keyword;
+        }
+
+        public void setKeyword(String keyword) {
+            this.keyword = keyword;
+        }
     }
 }
