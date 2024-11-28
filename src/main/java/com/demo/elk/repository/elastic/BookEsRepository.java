@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface BookEsRepository extends ElasticsearchRepository<BookDocument, Long> {
 
-    List<Book> findByBookNameContaining(String keyword);
+    List<BookDocument> findByBookNameContaining(String keyword);
 }

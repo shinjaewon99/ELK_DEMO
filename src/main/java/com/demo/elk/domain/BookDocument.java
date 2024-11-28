@@ -26,7 +26,8 @@ public class BookDocument {
 
 
     @Builder
-    public BookDocument(String bookName, String authorName, String pblshr) {
+    public BookDocument(String id, String bookName, String authorName, String pblshr) {
+        this.id = id;
         this.bookName = bookName;
         this.authorName = authorName;
         this.pblshr = pblshr;
